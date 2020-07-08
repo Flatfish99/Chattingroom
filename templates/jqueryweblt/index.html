@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Soho - Chat and Discussion Platform</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="./dist/media/img/fish.png" type="image/png">
+
+    <!-- Soho css -->
+    <link rel="stylesheet" href="./dist/css/soho.min.css">
+</head>
+<body>
+
+<!-- page loading -->
+<div class="page-loading"></div>
+<!-- ./ page loading -->
+
+<!-- disconnected modal -->
+<div class="modal fade" id="disconnected" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-zoom" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="connection-error">
+                    <h4 class="text-center">Application disconnected...</h4>
+                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                         y="0px"
+                         width="862.899px" height="862.9px" viewBox="0 0 862.899 862.9" style="enable-background:new 0 0 862.899 862.9;"
+                         xml:space="preserve">
+                        <g>
+                            <g>
+                                <circle cx="385.6" cy="656.1" r="79.8"/>
+                                <path d="M561.7,401c-15.801-10.3-32.601-19.2-50.2-26.6c-39.9-16.9-82.3-25.5-126-25.5c-44.601,0-87.9,8.9-128.6,26.6
+                                    c-39.3,17-74.3,41.3-104.1,72.2L253.5,545c34.899-36.1,81.8-56,132-56c49,0,95.1,19.1,129.8,53.8l25.4-25.399L493,469.7L561.7,401
+                                    z"/>
+                                <path d="M385.6,267.1c107.601,0,208.9,41.7,285.3,117.4l98.5-99.5c-50-49.5-108.1-88.4-172.699-115.6
+                                    c-66.9-28.1-138-42.4-211.101-42.4c-73.6,0-145,14.4-212.3,42.9c-65,27.5-123.3,66.8-173.3,116.9l99,99
+                                    C175.5,309.299,277.3,267.1,385.6,267.1z"/>
+                                <polygon points="616.8,402.5 549.7,469.599 639.2,559.099 549.7,648.599 616.8,715.7 706.3,626.2 795.8,715.7 862.899,648.599
+                                    773.399,559.099 862.899,469.599 795.8,402.5 706.3,492 		"/>
+                            </g>
+                        </g>
+                        <g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+                    </svg>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-primary btn-lg">Reconnect</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ disconnected modal -->
+
+
+
+<!-- add friends modal -->
+<div class="modal fade" id="addFriends" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-dialog-zoom" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="ti-user"></i> Add Friends
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="ti-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info">Send invitations to friends.</div>
+                <form>
+                    <div class="form-group">
+                        <label for="emails" class="col-form-label">Email addresses</label>
+                        <input type="text" class="form-control" id="emails">
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="col-form-label">Invitation message</label>
+                        <textarea class="form-control" id="message"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ add friends modal -->
+
+<!-- new group modal -->
+<div class="modal fade" id="newGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-zoom" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fa fa-users"></i> New Group
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="ti-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="group_name" class="col-form-label">Group name</label>
+                        <input type="text" class="form-control" id="group_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="users" class="col-form-label">Users</label>
+                        <input type="text" class="form-control" id="users" placeholder="Find user">
+                    </div>
+                    <div class="form-group">
+                        <div class="avatar-group">
+                            <figure class="avatar">
+                                <span class="avatar-title bg-success rounded-circle">E</span>
+                            </figure>
+                            <figure class="avatar">
+                                <img src="./dist/media/img/women_avatar1.jpg" class="rounded-circle">
+                            </figure>
+                            <figure class="avatar">
+                                <span class="avatar-title bg-danger rounded-circle">S</span>
+                            </figure>
+                            <figure class="avatar">
+                                <img src="./dist/media/img/man_avatar2.jpg" class="rounded-circle">
+                            </figure>
+                            <figure class="avatar">
+                                <span class="avatar-title bg-info rounded-circle">C</span>
+                            </figure>
+                            <a href="#">
+                                <figure class="avatar">
+                                    <span class="avatar-title bg-primary rounded-circle">+</span>
+                                </figure>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="col-form-label">Description</label>
+                        <textarea class="form-control" id="description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Create Group</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ new group modal -->
+
+
+
+<!-- layout -->
+<div class="layout">
+
+    <!-- navigation -->
+    <nav class="navigation">
+        <div class="nav-group">
+            <ul>
+                <li>
+                    <a class="logo" href="#">
+                        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                             width="33.004px" height="33.003px" viewBox="0 0 33.004 33.003" style="enable-background:new 0 0 33.004 33.003;"
+                             xml:space="preserve">
+                            <g>
+                                <path d="M4.393,4.788c-5.857,5.857-5.858,15.354,0,21.213c4.875,4.875,12.271,5.688,17.994,2.447l10.617,4.161l-4.857-9.998
+                                    c3.133-5.697,2.289-12.996-2.539-17.824C19.748-1.072,10.25-1.07,4.393,4.788z M25.317,22.149l0.261,0.512l1.092,2.142l0.006,0.01
+                                    l1.717,3.536l-3.748-1.47l-0.037-0.015l-2.352-0.883l-0.582-0.219c-4.773,3.076-11.221,2.526-15.394-1.646
+                                    C1.469,19.305,1.469,11.481,6.277,6.672c4.81-4.809,12.634-4.809,17.443,0.001C27.919,10.872,28.451,17.368,25.317,22.149z"/>
+                                <g>
+                                    <circle cx="9.835" cy="16.043" r="1.833"/>
+                                    <circle cx="15.502" cy="16.043" r="1.833"/>
+                                    <circle cx="21.168" cy="16.043" r="1.833"/>
+                                </g>
+                            </g>
+                            <g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a data-navigation-target="chats" class="active" href="#">
+                        <i class="ti-comment-alt"></i>
+                    </a>
+                </li>
+                <li>
+                    <a data-navigation-target="friends" href="#" class="notifiy_badge">
+                        <i class="ti-user"></i>
+                    </a>
+                </li>
+                <li data-navigation-target="favorites" class="brackets">
+                    <a href="#">
+                        <i class="ti-star"></i>
+                    </a>
+                </li>
+
+
+                <li>
+                    <a href="./login.html">
+                        <i class="ti-power-off"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- ./ navigation -->
+
+    <!-- content -->
+    <div class="content">
+
+        <!-- sidebar group -->
+        <div class="sidebar-group">
+
+            <!-- Chats sidebar -->
+            <div id="chats" class="sidebar active">
+                <header>
+                    <span>Chats</span>
+                    <ul class="list-inline">
+                        <li class="list-inline-item" data-toggle="tooltip" title="New Group" >
+                            <a class="btn btn-light" href="#" data-toggle="modal" data-target="#newGroup">
+                                <i class="fa fa-users"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a class="btn btn-light" data-toggle="tooltip" title="New Chat" href="#" data-navigation-target="friends">
+                                <i class="ti-comment-alt"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item d-lg-none d-sm-block">
+                            <a href="#" class="btn btn-light sidebar-close">
+                                <i class="ti-close"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </header>
+                <form action="">
+                    <input type="text" class="form-control" placeholder="Search chat">
+                </form>
+                <div class="sidebar-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <figure class="avatar avatar-state-success">
+                                <img src="./dist/media/img/man_avatar1.jpg" class="rounded-circle">
+                            </figure>
+                            <div class="users-list-body">
+                                <h5>Patsy Paulton</h5>
+                                <p>Traditional heading elscas sdscsd sdcsdsc</p>
+                                <div class="users-list-action">
+                                    <div class="new-message-count">2</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item open-chat">
+                            <div>
+                                <figure class="avatar">
+                                    <img src="./dist/media/img/man_avatar3.jpg" class="rounded-circle">
+                                </figure>
+                            </div>
+                            <div class="users-list-body">
+                                <h5>Karl Hubane</h5>
+                                <p>Lorem ipsum dolor sitsdc sdcsdc sdcsdcs</p>
+                                <div class="users-list-action action-toggle">
+                                    <div class="dropdown">
+                                        <a data-toggle="dropdown" href="#">
+                                            <i class="ti-more"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a href="#" class="dropdown-item">Open</a>
+                                            <a href="#" data-navigation-target="contact-information" class="dropdown-item">Profile</a>
+                                            <a href="#" class="dropdown-item">Add to archive</a>
+                                            <a href="#" class="dropdown-item">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+
+
+
+                    </ul>
+                </div>
+            </div>
+            <!-- ./ Chats sidebar -->
+
+            <!-- Friends sidebar -->
+            <div id="friends" class="sidebar">
+                <header>
+                    <span>Friends</span>
+                    <ul class="list-inline">
+                        <li class="list-inline-item">
+                            <a class="btn btn-light" href="#" data-toggle="modal" data-target="#addFriends">
+                                <i class="ti-plus btn-icon"></i> Add Friends
+                            </a>
+                        </li>
+                        <li class="list-inline-item d-lg-none d-sm-block">
+                            <a href="#" class="btn btn-light sidebar-close">
+                                <i class="ti-close"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </header>
+                <form action="">
+                    <input type="text" class="form-control" placeholder="Search chat">
+                </form>
+                <div class="sidebar-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div>
+                                <figure class="avatar">
+                                    <img src="./dist/media/img/women_avatar5.jpg" class="rounded-circle">
+                                </figure>
+                            </div>
+                            <div class="users-list-body">
+                                <h5>Harrietta Souten</h5>
+                                <p>Lorem ipsum dolor sitsdc sdcsdc sdcsdcs</p>
+                                <div class="users-list-action action-toggle">
+                                    <div class="dropdown">
+                                        <a data-toggle="dropdown" href="#">
+                                            <i class="ti-more"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a href="#" class="dropdown-item">Open</a>
+
+                                            <a href="#" class="dropdown-item">Add to archive</a>
+                                            <a href="#" class="dropdown-item">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <!-- ./ Friends sidebar -->
+
+            <!-- Favorites sidebar -->
+            <div id="favorites" class="sidebar">
+                <header>
+                    <span>Favorites</span>
+                    <ul class="list-inline">
+                        <li class="list-inline-item d-lg-none d-sm-block">
+                            <a href="#" class="btn btn-light sidebar-close">
+                                <i class="ti-close"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </header>
+                <form action="">
+                    <input type="text" class="form-control" placeholder="Search favorites">
+                </form>
+                <div class="sidebar-body">
+                    <ul class="list-group list-group-flush users-list">
+
+                        <li class="list-group-item">
+                            <div class="users-list-body">
+                                <h5>Karl Hubane</h5>
+                                <p>Lorem ipsum dolor sitsdc sdcsdc sdcsdcs</p>
+                                <div class="users-list-action action-toggle">
+                                    <div class="dropdown">
+                                        <a data-toggle="dropdown" href="#">
+                                            <i class="ti-more"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a href="#" class="dropdown-item">View Chat</a>
+                                            <a href="#" class="dropdown-item">Forward</a>
+                                            <a href="#" class="dropdown-item">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ./ Stars sidebar -->
+
+        </div>
+        <!-- ./ sidebar group -->
+
+        <!-- chat -->
+        <div class="chat">
+            <div class="chat-header">
+                <div class="chat-header-user">
+                    <figure class="avatar avatar-lg">
+                        <img src="./dist/media/img/man_avatar3.jpg" class="rounded-circle">
+                    </figure>
+                    <div>
+                        <h5>Karl Hubane</h5>
+                        <small class="text-muted">
+                            <i>Online</i>
+                        </small>
+                    </div>
+                </div>
+
+            </div>
+            <div class="chat-body"> <!-- .no-message -->
+                <!--
+                <div class="no-message-container">
+                    <i class="fa fa-comments-o"></i>
+                    <p>Select a chat to read messages</p>
+                </div>
+                -->
+                <div class="messages">
+
+                </div>
+            </div>
+            <div class="chat-footer">
+                <form action="">
+                    <input type="text" class="form-control" placeholder="请输入聊天内容"
+                           aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <div class="form-buttons">
+
+                        <button class="btn btn-primary btn-floating" type="submit">
+                            <i class="fa fa-send"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- ./ content -->
+
+</div>
+<!-- ./ layout -->
+
+<!-- JQuery -->
+<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+
+<!-- Popper.js -->
+<script src="./vendor/popper.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="./vendor/bootstrap/bootstrap.min.js"></script>
+
+<!-- Nicescroll -->
+<script src="./vendor/jquery.nicescroll.min.js"></script>
+
+<!-- Soho -->
+<script src="./dist/js/soho.min.js"></script>
+
+<!-- Examples -->
+<script src="./dist/js/examples.js"></script>
+</body>
+</html>
